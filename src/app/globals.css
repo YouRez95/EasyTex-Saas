@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Name: custom color palette
+       Author: Ilias Ism
+       URL: https://gradient.page */
+
+    /* CSS: .bg-gradient { background: var(--gradient) } */
+    --gradient: linear-gradient(to top left, #243949, #517fa4);
+    --background: 219 96.7% 98.44%;
+    --foreground: 219 3.4000000000000004% 0.88%;
+
+    --muted: 219 3.4000000000000004% 92.2%;
+    --muted-foreground: 219 1.7000000000000002% 42.2%;
+
+    --popover: 219 62.8% 92.2%;
+    --popover-foreground: 219 3.4000000000000004% 1.1%;
+
+    --card: 219 62.8% 92.2%;
+    --card-foreground: 219 3.4000000000000004% 1.1%;
+
+    --border: 219 8.4% 89.88%;
+    --input: 219 8.4% 89.88%;
+
+    --primary: 219 34% 22%;
+    --primary-foreground: 219 0.68% 92.2%;
+
+    --secondary: 219 1.7000000000000002% 96.1%;
+    --secondary-foreground: 219 3.04% 12.2%;
+
+    --accent: 219 1.7000000000000002% 96.1%;
+    --accent-foreground: 219 3.04% 12.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --ring: 219 34% 22%;
+
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+  .dark {
+    /* Name: custom color palette
+       Author: Ilias Ism
+       URL: https://gradient.page */
+
+    /* CSS: .bg-gradient { background: var(--gradient) } */
+    --gradient: linear-gradient(to top left, #cc95c0, #dbd4b4, #7aa1d2);
+
+    --background: -50 22.75% 5.52%;
+    --foreground: -50 3.5% 98.45%;
+
+    --muted: -50 17.5% 20.7%;
+    --muted-foreground: -50 3.5% 56.9%;
+
+    --popover: -50 58% 8.969999999999999%;
+    --popover-foreground: -50 3.5% 98.45%;
+
+    --card: -50 58% 8.969999999999999%;
+    --card-foreground: -50 3.5% 98.45%;
+
+    --border: -50 17.5% 20.7%;
+    --input: -50 17.5% 20.7%;
+
+    --primary: -50 35% 69%;
+    --primary-foreground: -50 3.5% 6.8999999999999995%;
+
+    --secondary: -50 17.5% 20.7%;
+    --secondary-foreground: -50 3.5% 98.45%;
+
+    --accent: -50 17.5% 20.7%;
+    --accent-foreground: -50 3.5% 98.45%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: -50 3.5% 98.45%;
+
+    --ring: -50 35% 69%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
