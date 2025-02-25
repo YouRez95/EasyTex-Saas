@@ -1,0 +1,1 @@
+export const DEFAULT_COLORS = ["#FF5733", "#33A1FF", "#28C76F", "#F7C32E"];

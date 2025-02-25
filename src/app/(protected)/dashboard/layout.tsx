@@ -1,7 +1,7 @@
 import InfoBar from "@/components/global/infobar";
 import Navbar from "@/components/global/navbar";
 import NavbarPhone from "@/components/global/navbar/navbar-phone";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 type Props = {
   children: React.ReactNode;
@@ -12,8 +12,8 @@ export default function Layout({ children }: Props) {
     <>
       <SidebarProvider className="">
         <Navbar />
-        <NavbarPhone />
-        <main className="min-h-screen w-full">
+        {/* <NavbarPhone /> */}
+        <main className="min-h-screen w-full overflow-hidden">
           <InfoBar />
           {children}
         </main>

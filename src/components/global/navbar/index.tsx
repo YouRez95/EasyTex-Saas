@@ -4,24 +4,60 @@ import { FileText } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarSeparator,
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { bagel } from "../../../../fonts/fonts";
 import { PRIMARY_MENU } from "@/constants/menu";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { UserButton } from "@clerk/nextjs";
+import ThemeSwitcher from "./theme-switcher";
+
+const folders = [
+  {
+    title: "1 apic",
+    url: "/dashboard/folders/1apic",
+    color: "#33A1FF",
+  },
+  {
+    title: "2 apic",
+    url: "/dashboard/folders/2apic",
+    color: "#28C76F",
+  },
+  {
+    title: "3 apic",
+    url: "/dashboard/folders/3apic",
+    color: "#F7C32E",
+  },
+];
 
 export default function navbar() {
   const { open } = useSidebar();
 
   return (
-    <Sidebar collapsible="icon" className={`pt-5 ${open ? "px-5" : "px-0"}`}>
+    <Sidebar
+      collapsible="icon"
+      className={`pt-5 ${open ? "px-5" : "px-0"} bg-sidebar`}
+    >
       <SidebarHeader>
         <SidebarGroup className="flex flex-row items-center gap-4">
           <Link
@@ -45,19 +81,81 @@ export default function navbar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {PRIMARY_MENU.map((item) => (
-                <SidebarMenuItem key={item.title} className="h-[40px]">
+                <SidebarMenuItem key={item.title} className="">
                   <SidebarMenuButton asChild>
                     <Link href={item.url} className="[&_svg]:size-5 h-full">
                       <item.icon className="" />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
+                  {item.title === "Folders" ? (
+                    <SidebarMenuSub className="">
+                      {folders.map((folder) => (
+                        <SidebarMenuSubItem key={folder.title}>
+                          <SidebarMenuSubButton asChild>
+                            <Link href={folder.url} className="h-10 flex gap-2">
+                              <span
+                                className="w-2 h-2 rounded-full"
+                                style={{ backgroundColor: folder.color }}
+                              />
+                              <span>{folder.title}</span>
+                            </Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  ) : null}
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <SidebarSeparator />
+        <SidebarGroup className="">
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem className="h-[40px]">
+                <SidebarMenuButton asChild>
+                  <Link href={""} className="[&_svg]:size-5 h-full">
+                    <UserButton />
+                    <span>Profil</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
+
+      <SidebarFooter
+        className={
+          open
+            ? "visible delay-200 transition-all flex flex-col gap-4"
+            : "invisible"
+        }
+      >
+        <div className="p-2 border-[1px] border-dashed rounded-xl border-muted-foreground">
+          <Card>
+            <CardHeader className={`p-1 pt-4 ${bagel.className}`}>
+              <CardTitle className="text-xl bg-clip-text text-transparent bg-gradient-to-b from-[#243949] via-[#171717] to-[#517fa4]">
+                Upgrade Your Plan
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-1">
+              <p className="text-sm">Unlock all Features</p>
+            </CardContent>
+            <CardFooter className="items-center p-1">
+              <Button className="w-full text-white rounded-full bg-gradient-to-b from-[#243949] via-[#171717] to-[#517fa4] font-bold">
+                Upgrade
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+
+        <div>
+          <ThemeSwitcher />
+        </div>
+      </SidebarFooter>
     </Sidebar>
   );
 }
