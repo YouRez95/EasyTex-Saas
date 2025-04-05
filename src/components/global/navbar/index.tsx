@@ -31,27 +31,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
 import ThemeSwitcher from "./theme-switcher";
-
-const folders = [
-  {
-    title: "1 apic",
-    url: "/dashboard/folders/1apic",
-    color: "#33A1FF",
-  },
-  {
-    title: "2 apic",
-    url: "/dashboard/folders/2apic",
-    color: "#28C76F",
-  },
-  {
-    title: "3 apic",
-    url: "/dashboard/folders/3apic",
-    color: "#F7C32E",
-  },
-];
+import { useFolders } from "@/hooks/useFolders";
 
 export default function navbar() {
   const { open } = useSidebar();
+  const { data: folderData, isPending } = useFolders();
 
   return (
     <Sidebar
@@ -88,23 +72,26 @@ export default function navbar() {
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
-                  {item.title === "Folders" ? (
+                  {item.title === "Folders" && folderData?.data && (
                     <SidebarMenuSub className="">
-                      {folders.map((folder) => (
-                        <SidebarMenuSubItem key={folder.title}>
+                      {folderData.data.map((folder) => (
+                        <SidebarMenuSubItem key={folder.id}>
                           <SidebarMenuSubButton asChild>
-                            <Link href={folder.url} className="h-10 flex gap-2">
+                            <Link
+                              href={`/dashboard/folders/${folder.slug}`}
+                              className="h-10 flex gap-2"
+                            >
                               <span
                                 className="w-2 h-2 rounded-full"
                                 style={{ backgroundColor: folder.color }}
                               />
-                              <span>{folder.title}</span>
+                              <span>{folder.name}</span>
                             </Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       ))}
                     </SidebarMenuSub>
-                  ) : null}
+                  )}
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>

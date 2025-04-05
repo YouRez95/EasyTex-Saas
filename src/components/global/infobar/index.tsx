@@ -21,7 +21,7 @@ export default async function InfoBar() {
 
       <div className="relative flex-1 max-w-[300px] hidden md:flex">
         <Input
-          className="bg-white rounded-full w-full"
+          className="bg-background rounded-full w-full"
           placeholder="Search Folders .."
         />
         <Search

@@ -1,7 +1,7 @@
-import { Plus } from "lucide-react";
 import { bagel } from "../../../../fonts/fonts";
 import LastFiles from "@/components/global/last-files";
 import CreateFolderDialog from "@/components/global/create-folder";
+import FoldersScrollable from "@/components/global/folders-scrollable";
 
 export default function Page() {
   return (
@@ -29,12 +29,7 @@ export default function Page() {
 
           {/* Scrollable Content Section */}
           <div className="w-full overflow-hidden">
-            <div className="flex gap-4 h-full overflow-x-scroll scrollbar-hide">
-              <div className="h-full bg-primary rounded-xl w-[150px] md:w-[250px] flex-shrink-0"></div>
-              <div className="h-full bg-primary rounded-xl w-[150px] md:w-[250px] flex-shrink-0"></div>
-              <div className="h-full bg-primary rounded-xl w-[150px] md:w-[250px] flex-shrink-0"></div>
-              <div className="h-full bg-primary rounded-xl w-[150px] md:w-[250px] flex-shrink-0"></div>
-            </div>
+            <FoldersScrollable />
           </div>
         </div>
       </div>
