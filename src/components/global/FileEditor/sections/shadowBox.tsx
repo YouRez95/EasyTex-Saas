@@ -33,7 +33,7 @@ import {
 import { useSectionsStore } from "../store";
 
 const ShadowBox = () => {
-  const { selectedSection, editSections } = useSectionsStore();
+  const { selectedSection, editSection } = useSectionsStore();
   const form = useForm<ShadowboxFormValues>({
     resolver: zodResolver(shadowboxSchema),
     defaultValues: {
@@ -43,7 +43,7 @@ const ShadowBox = () => {
 
   const onSubmit = (data: ShadowboxFormValues) => {
     if (!selectedSection) return;
-    editSections({ ...selectedSection, ...data }, selectedSection.order);
+    editSection({ ...selectedSection, ...data }, selectedSection.order);
   };
 
   return (

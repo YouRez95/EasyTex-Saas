@@ -32,13 +32,10 @@ import { DEFAULT_COLORS } from "@/constants/folder-colors";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateFolder } from "@/hooks/useCreateFolder";
 import { useState } from "react";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 export default function CreateFolderDialog() {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
-  const { mutate, isPending, isSuccess } = useCreateFolder();
+  const { mutate: createFolder, isPending } = useCreateFolder();
   const form = useForm<CreateFolderSchemaType>({
     resolver: zodResolver(createFolderSchema),
     defaultValues: {
@@ -49,20 +46,7 @@ export default function CreateFolderDialog() {
   });
 
   function onSubmit(values: CreateFolderSchemaType) {
-    mutate(
-      { ...values },
-      {
-        onSuccess: (data) => {
-          setIsOpen(false);
-          toast.success("Folder created successfully");
-          router.push(`/dashboard/folders/${data?.data.slug}`);
-        },
-        onError: (error) => {
-          console.log(error);
-          toast.error(error.message);
-        },
-      }
-    );
+    createFolder(values);
   }
 
   return (

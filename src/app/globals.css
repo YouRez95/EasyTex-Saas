@@ -104,3 +104,50 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+.ck-content * {
+  all: revert;
+}
+
+.ck-content {
+  font-family: 'Times New Roman', Times, serif;
+  line-height: 1.5;
+}
+
+.ck-content p {
+  text-align: justify;
+  margin: 3px;
+}
+
+
+.ck-content ul, .ck-content ol {
+  margin: 0;
+  padding: 0;
+  padding-left: 10px;
+}
+
+.multicol-container {
+  display: flex;
+  gap: 1px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.multicol-container:hover .multicol-item {
+  border-color: #000;
+}
+
+/* Individual columns */
+.multicol-item {
+  flex: 1;
+  border: .1px solid transparent;
+  padding: 10px;
+  transition: border 0.3s ease;
+}
+
+
+/* .wrs_modal_dialogContainer {
+  pointer-events: auto;
+} */
+

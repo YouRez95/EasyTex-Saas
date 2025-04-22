@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useFiles } from "@/hooks/useFiles";
 import { formatDistance } from "date-fns";
 import Link from "next/link";
 
@@ -18,7 +17,12 @@ interface AllFilesProps {
   folderSlug: string;
 }
 
-export default function AllFiles({ folderId, files, folders, folderSlug }: AllFilesProps) {
+export default function AllFiles({
+  folderId,
+  files,
+  folders,
+  folderSlug,
+}: AllFilesProps) {
   // WIP: Add the loading for the pending state
   // WIP: Add the error handling
   // WIP: Add the empty folder case

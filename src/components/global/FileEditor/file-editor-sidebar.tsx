@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Book, LayoutTemplate, Shapes, TableOfContents } from "lucide-react";
-import FileEditorSections from "./FileEditorSections";
+import FileEditorSections from "./file-editor-sections";
 
 const FileEditorSidebar = () => {
   return (

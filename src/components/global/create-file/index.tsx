@@ -29,7 +29,7 @@ import {
   CreateFolderSchemaType,
 } from "@/lib/schemas/folderSchema";
 import { Plus } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DEFAULT_COLORS } from "@/constants/folder-colors";
 import { Textarea } from "@/components/ui/textarea";
@@ -48,8 +48,7 @@ export default function CreateFileDialog({
   slug: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
-  const { mutate, isPending, isSuccess } = useCreateFile();
+  const { mutate: createFile, isPending } = useCreateFile();
   const form = useForm<CreateFileSchemaType>({
     resolver: zodResolver(createFileSchema),
     defaultValues: {
@@ -58,17 +57,12 @@ export default function CreateFileDialog({
   });
 
   function onSubmit(values: CreateFileSchemaType) {
-    mutate(
+    createFile(
       { fileData: values, folderId, folderSlug: slug },
       {
-        onSuccess: (data) => {
+        onSuccess: () => {
           setIsOpen(false);
-          toast.success("File created successfully");
-          // router.push(`/dashboard/folders/${slug}/${data?.data.id}`);
-        },
-        onError: (error) => {
-          console.log(error);
-          toast.error(error.message);
+          form.reset();
         },
       }
     );

@@ -1,6 +1,5 @@
 "use client";
 
-import LastFiles from "@/components/global/last-files";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSingleFolder } from "@/hooks/useSingleFolder";
@@ -18,8 +17,6 @@ import AllFiles from "./all-files";
 export default function SingleFolder({ folderSlug }: { folderSlug: string }) {
   // WIP: Handle the not found folder
   const { data, error, isPending } = useSingleFolder({ slug: folderSlug });
-
-  console.log("single folder", data, error, isPending);
 
   if (isPending) return <div>Loading...</div>;
 
@@ -147,7 +144,12 @@ export default function SingleFolder({ folderSlug }: { folderSlug: string }) {
             </Button>
           </div>
         </div>
-        <AllFiles folderId={folderId} folders={children} files={documents} folderSlug={folderSlug} />
+        <AllFiles
+          folderId={folderId}
+          folders={children}
+          files={documents}
+          folderSlug={folderSlug}
+        />
       </div>
     </>
   );

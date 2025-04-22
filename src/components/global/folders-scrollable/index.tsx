@@ -1,12 +1,12 @@
 "use client";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { useFolders } from "@/hooks/useFolders";
+import { useGetFolders } from "@/hooks/useGetFolders";
 import { FolderRoot } from "lucide-react";
 import Link from "next/link";
 
 export default function FoldersScrollable() {
-  const { data, isPending } = useFolders();
+  const { data, isPending } = useGetFolders();
 
   if (isPending) return <FoldersScrollableSkeleton />;
 

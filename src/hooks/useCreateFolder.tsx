@@ -1,20 +1,26 @@
-import { createFolder } from "@/lib/api/folders";
+import { useFoldersService } from "@/lib/api/useFoldersService";
 import { CreateFolderSchemaType } from "@/lib/schemas/folderSchema";
-import { useAuth } from "@clerk/nextjs";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export function useCreateFolder() {
-  const { getToken } = useAuth();
+  const { createFolder } = useFoldersService();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   return useMutation({
     mutationFn: async (folderData: CreateFolderSchemaType) => {
-      const token = await getToken();
-      if (!token) return;
-      return createFolder<CreateFolderResponse>(token, folderData);
+      return createFolder<CreateFolderResponse>(folderData);
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["folders"] });
+      router.push(`/dashboard/folders/${data?.data.slug}`);
+      toast.success("Your folder has been created successfully");
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error(error.message);
     },
   });
 }

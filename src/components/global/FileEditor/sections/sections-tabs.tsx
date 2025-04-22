@@ -9,7 +9,7 @@ const SECTIONS = ["boxes", "rules", "tables"];
 
 const SectionTabs = () => {
   const [sectionType, setSectionType] = useState<string>("boxes");
-  const { addSections } = useSectionsStore();
+  const { addSection } = useSectionsStore();
 
   // WIP: Replace The Dummy Sections with the sections from the database
   const SECTIONS_CONTENT = DUMMY_SECTIONS.filter(
@@ -38,7 +38,7 @@ const SectionTabs = () => {
           <div
             key={content.id}
             className="border w-72 p-2 h-72 flex items-center justify-center hover:bg-muted cursor-pointer relative"
-            onClick={() => addSections(content.config as Section)}
+            onClick={() => addSection(content.config as Section)}
           >
             <Image
               src={content.image}

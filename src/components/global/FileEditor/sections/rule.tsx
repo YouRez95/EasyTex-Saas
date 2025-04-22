@@ -29,7 +29,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const Rule = () => {
-  const { selectedSection, editSections } = useSectionsStore();
+  const { selectedSection, editSection } = useSectionsStore();
   const form = useForm<RuleFormValues>({
     resolver: zodResolver(RuleSchema),
     defaultValues: {
@@ -39,7 +39,7 @@ const Rule = () => {
 
   const onSubmit = (data: RuleFormValues) => {
     if (!selectedSection) return;
-    editSections({ ...selectedSection, ...data }, selectedSection.order);
+    editSection({ ...selectedSection, ...data }, selectedSection.order);
   };
   return (
     <Form {...form}>

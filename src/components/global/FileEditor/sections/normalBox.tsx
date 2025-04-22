@@ -31,9 +31,10 @@ import {
   textAlignOptions,
 } from "@/lib/section-types/base";
 import { Textarea } from "@/components/ui/textarea";
+import { ContentFormField } from "../../content-form-field";
 
 export const NormalBox = () => {
-  const { selectedSection, editSections } = useSectionsStore();
+  const { selectedSection, editSection } = useSectionsStore();
 
   const form = useForm<NormalboxFormValues>({
     resolver: zodResolver(normalboxSchema),
@@ -45,7 +46,7 @@ export const NormalBox = () => {
   const onSubmit = (data: NormalboxFormValues) => {
     console.log(data);
     if (!selectedSection) return;
-    editSections({ ...selectedSection, ...data }, selectedSection.order);
+    editSection({ ...selectedSection, ...data }, selectedSection.order);
   };
   return (
     <Form {...form}>
@@ -240,6 +241,20 @@ export const NormalBox = () => {
           )}
         />
 
+        {/* <FormField
+          control={form.control}
+          name="content"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Content</FormLabel>
+              <FormControl>
+                <Textarea placeholder="Enter content" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        /> */}
+
         <FormField
           control={form.control}
           name="content"
@@ -247,7 +262,10 @@ export const NormalBox = () => {
             <FormItem>
               <FormLabel>Content</FormLabel>
               <FormControl>
-                <Textarea placeholder="Enter content" {...field} disabled />
+                <ContentFormField
+                  value={field.value}
+                  onChange={field.onChange}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -31,11 +31,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
 import ThemeSwitcher from "./theme-switcher";
-import { useFolders } from "@/hooks/useFolders";
+import { useGetFolders } from "@/hooks/useGetFolders";
 
 export default function navbar() {
   const { open } = useSidebar();
-  const { data: folderData, isPending } = useFolders();
+  const { data: folderData, isPending } = useGetFolders();
 
   return (
     <Sidebar

@@ -1,15 +1,11 @@
-import { createFile } from "@/lib/api/documents";
-import { createFolder } from "@/lib/api/folders";
-import {
-  CreateFileSchemaType,
-  CreateFolderSchemaType,
-} from "@/lib/schemas/folderSchema";
-import { useAuth } from "@clerk/nextjs";
+import { useFilesService } from "@/lib/api/useFilesService";
+import { CreateFileSchemaType } from "@/lib/schemas/folderSchema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export function useCreateFile() {
-  const { getToken } = useAuth();
   const queryClient = useQueryClient();
+  const { createFile } = useFilesService();
 
   return useMutation({
     mutationFn: async ({
@@ -21,23 +17,33 @@ export function useCreateFile() {
       folderId: string;
       folderSlug: string;
     }) => {
-      const token = await getToken();
-      if (!token) return;
-      return createFile<CreateFileResponse>(token, fileData, folderId);
+      return createFile<CreateFileResponse>(fileData, folderId);
     },
     onSuccess: (data, variables) => {
       const { folderSlug } = variables;
-      queryClient.setQueryData(["folders", folderSlug], (oldData: GetSingleFolderResponse) => {
-        if (!oldData) return;
-        const documents: Document[] = [data?.data!, ...oldData.data.documents];
-        return {
-          ...oldData,
-          data: {
-            ...oldData.data,
-            documents,
-          },
-        };
-      });
-    }
+      queryClient.setQueryData(
+        ["folders", folderSlug],
+        (oldData: GetSingleFolderResponse) => {
+          if (!oldData) return;
+          const documents: Document[] = [
+            data?.data!,
+            ...oldData.data.documents,
+          ];
+          return {
+            ...oldData,
+            data: {
+              ...oldData.data,
+              documents,
+            },
+          };
+        }
+      );
+
+      toast.success("File created successfully");
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error(error.message);
+    },
   });
 }

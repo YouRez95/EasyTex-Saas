@@ -1,76 +1,107 @@
-import { sendSectionsToBackend } from "@/lib/api/compiler";
 import { Section } from "@/lib/section-types/base";
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 
-type SectionWithOrder = Section & { order: number };
+export type SectionWithOrder = Section & { order: number };
 
 type SectionStore = {
-  sections: SectionWithOrder[] | [];
+  sections: SectionWithOrder[] | null;
+  hasUnsavedChanges: boolean;
   selectedSection: SectionWithOrder | null;
   lastResponse: { success: boolean; data?: any; error?: string } | null;
+
+  // Actions
+  resetStore: () => void; // Added reset functionality
+  setLastResponse: (
+    response: { success: boolean; data?: any; error?: string } | null
+  ) => void;
+  setSections: (sections: SectionWithOrder[] | null) => void;
+  setHasUnsavedChanges: (value: boolean) => void;
   setSelectedSection: (section: SectionWithOrder | null) => void;
-  addSections: (section: Section) => void;
-  editSections: (section: Section, order: number) => void;
+  addSection: (section: Section) => void;
+  editSection: (section: Section, order: number) => void;
   reorderSections: (sections: Section[]) => void;
-  removeSection: (section: Section) => void;
-  submitSections: (token: string) => Promise<void>;
+  removeSection: (sectionId: string) => void;
 };
 
 export const useSectionsStore = create<SectionStore>()(
   subscribeWithSelector((set) => ({
-    sections: [],
+    sections: null,
     lastResponse: null,
     selectedSection: null,
-    setSelectedSection: (section) => set({ selectedSection: section }),
-    addSections: (section) =>
-      set((state) => ({
-        sections: [
-          ...state.sections,
-          { ...section, order: state.sections.length + 1 },
-        ],
-      })),
-    editSections: (newData, order) => {
-      set((state) => ({
-        sections: state.sections.map((section) =>
-          section.order === order ? { ...newData, order } : section
-        ),
-      }));
-    },
-    removeSection: (section) =>
-      set((state) => ({
-        sections: state.sections.filter((s) => s.id !== section.id),
-      })),
-    //  WIP: Reorder sections
-    reorderSections: (sections) => {},
-    submitSections: async (token: string) => {
-      const sections = useSectionsStore.getState().sections;
-      const response = await sendSectionsToBackend(
-        token as string,
-        sections as Section[]
-      );
+    hasUnsavedChanges: false,
 
-      useSectionsStore.setState({ lastResponse: response });
-    },
+    // Reset store to initial state
+    resetStore: () =>
+      set({
+        sections: null,
+        lastResponse: null,
+        selectedSection: null,
+        hasUnsavedChanges: false,
+      }),
+
+    setSections: (sections) => set({ sections }),
+
+    setLastResponse: (response) => set({ lastResponse: response }),
+
+    setSelectedSection: (section) => set({ selectedSection: section }),
+
+    setHasUnsavedChanges: (value) => set({ hasUnsavedChanges: value }),
+
+    addSection: (section) =>
+      set((state) => {
+        if (!state.sections) {
+          return {
+            sections: [{ ...section, order: 1 }],
+            hasUnsavedChanges: true,
+          };
+        }
+
+        return {
+          sections: [
+            ...state.sections,
+            { ...section, order: state.sections.length + 1 },
+          ],
+          hasUnsavedChanges: true,
+        };
+      }),
+
+    editSection: (newData, order) =>
+      set((state) => ({
+        sections:
+          state.sections?.map((section) =>
+            section.order === order ? { ...newData, order } : section
+          ) || null,
+        hasUnsavedChanges: true,
+      })),
+
+    removeSection: (sectionId) =>
+      set((state) => {
+        if (!state.sections) return state;
+
+        const filteredSections = state.sections.filter(
+          (s) => s.id !== sectionId
+        );
+
+        // Reorder remaining sections to ensure continuous ordering
+        const reorderedSections = filteredSections.map((section, index) => ({
+          ...section,
+          order: index + 1,
+        }));
+
+        return {
+          sections: reorderedSections,
+          hasUnsavedChanges: true,
+        };
+      }),
+
+    reorderSections: (sections) =>
+      set({
+        sections: sections.map((section, index) => ({
+          ...section,
+          order: index + 1,
+        })),
+        hasUnsavedChanges: true,
+      }),
   }))
 );
-
-// useSectionsStore.subscribe(
-//   (state) => [state.sections, state.token],
-//   async ([sections, token], previousState) => {
-//     if (!token || !sections) return;
-
-//     // Check if sections or token have changed
-//     const [prevSections, prevToken] = previousState || [];
-//     if (prevSections === sections && prevToken === token) {
-//       return; // Skip if sections and token haven't changed
-//     }
-//     const response = await sendSectionsToBackend(
-//       token as string,
-//       sections as Section[]
-//     );
-
-//     useSectionsStore.setState({ lastResponse: response });
-//   },
-//   { fireImmediately: true } // Fire immediately to send the first request
-// );
